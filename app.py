@@ -140,7 +140,7 @@ with st.form("order_form"):
     
     # Search Bar and Selectbox
     st.markdown("**Search & Select Product**")
-    search_query = st.text_input(placeholder="Search product here...")
+
     
     # Filter products based on search query
     if search_query:
