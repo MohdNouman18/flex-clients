@@ -138,9 +138,8 @@ with st.form("order_form"):
     with col2:
         phone = st.text_input("Phone")
     
-    # Search Bar and Selectbox
-    st.markdown("**Search & Select Product**")
-
+    # Search Bar (Bina kisi extra text ke)
+    search_query = st.text_input("Search Product", placeholder="Search...")
     
     # Filter products based on search query
     if search_query:
