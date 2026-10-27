@@ -129,7 +129,7 @@ PRODUCTS = [
 ]
 
 # ==========================================
-# ORDER FORM
+# ORDER FORM WITH SEARCH BAR
 # ==========================================
 with st.form("order_form"):
     col1, col2 = st.columns(2)
@@ -138,7 +138,21 @@ with st.form("order_form"):
     with col2:
         phone = st.text_input("Phone")
     
-    product = st.selectbox("Product", PRODUCTS)
+    # Search Bar and Selectbox
+    st.markdown("**Search & Select Product**")
+    search_query = st.text_input("Type to search (e.g., 110MM, PN 16)", placeholder="Search product here...")
+    
+    # Filter products based on search query
+    if search_query:
+        filtered_products = [p for p in PRODUCTS if search_query.upper() in p.upper()]
+        if not filtered_products:
+            st.warning("No products found for this search.")
+            filtered_products = PRODUCTS # Fallback to show all if nothing matches
+    else:
+        filtered_products = PRODUCTS
+
+    # Product Selectbox
+    product = st.selectbox("Select Product", filtered_products)
     
     col3, col4 = st.columns(2)
     with col3:
@@ -159,12 +173,12 @@ if submit:
             try:
                 html_content = f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-top: 4px solid #0056b3;">
-                    <h3 style="color: #0056b3;">New Order Received</h3>
+                    <h3 style="color: #0056b3;">New Pipe Order Received</h3>
                     <hr>
                     <p><strong>Name:</strong> {name}</p>
                     <p><strong>Phone:</strong> {phone}</p>
                     <p><strong>Product:</strong> {product}</p>
-                    <p><strong>Quantity:</strong> {quantity} RFT</p>
+                    <p><strong>Quantity:</strong> {quantity} Meters</p>
                     <p><strong>Location:</strong> {location}</p>
                 </div>
                 """
@@ -181,4 +195,3 @@ if submit:
                 
             except Exception as e:
                 st.error(f"Error: {str(e)}")
-
