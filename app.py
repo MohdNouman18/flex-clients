@@ -159,7 +159,7 @@ if submit:
             try:
                 html_content = f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-top: 4px solid #0056b3;">
-                    <h3 style="color: #0056b3;">New Pipe Order Received</h3>
+                    <h3 style="color: #0056b3;">New Order Received</h3>
                     <hr>
                     <p><strong>Name:</strong> {name}</p>
                     <p><strong>Phone:</strong> {phone}</p>
