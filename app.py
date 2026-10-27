@@ -3,32 +3,50 @@ import resend
 import os
 
 # ==========================================
-# PAGE SETUP & MINIMAL CSS
+# PAGE SETUP & STYLING
 # ==========================================
 st.set_page_config(page_title="Flex Pipe | Order", layout="centered")
 
 st.markdown("""
     <style>
-    /* Simple and clean background */
+    /* Page Background */
     .stApp {
-        background-color: #ffffff;
+        background-color: #f4f7f6;
     }
     
-    /* Form container */
+    /* Form Container */
     div[data-testid="stForm"] {
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        border-top: 4px solid #0056b3; /* Flex Pipe Blue */
     }
     
-    /* Button style */
+    /* Headings */
+    h3 {
+        color: #333333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 600;
+    }
+    
+    /* Input Fields */
+    .stTextInput input, .stNumberInput input, .stSelectbox select {
+        border-radius: 6px !important;
+        border: 1px solid #d1d5db !important;
+    }
+    
+    /* Submit Button */
     .stButton>button {
         width: 100%;
         background-color: #0056b3;
         color: white;
-        height: 45px;
+        height: 48px;
         font-size: 16px;
-        border-radius: 5px;
+        font-weight: 600;
+        border-radius: 6px;
+        border: none;
+        transition: background-color 0.3s ease;
     }
     .stButton>button:hover {
         background-color: #004494;
@@ -40,13 +58,12 @@ st.markdown("""
 # ==========================================
 # HEADER & LOGO
 # ==========================================
-# Agar logo.png file folder mein hai toh show hoga
 if os.path.exists("logo.png"):
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 1.5, 1])
     with col2:
         st.image("logo.png", use_container_width=True)
 
-st.markdown("<h3 style='text-align: center; color: #333;'>Order Form</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Client Order Form</h3>", unsafe_allow_html=True)
 
 # ==========================================
 # SECRETS SETUP
@@ -59,7 +76,7 @@ except Exception:
     st.stop()
 
 # ==========================================
-# PRODUCTS LIST (From your CSV)
+# PRODUCTS LIST
 # ==========================================
 PRODUCTS = [
     "HDPE (PE-100) 20MM PN 16 BLACK", "HDPE (PE-100) 25MM PN 16 BLACK", "HDPE (PE-100) 32MM PN 16 BLACK",
@@ -112,15 +129,22 @@ PRODUCTS = [
 ]
 
 # ==========================================
-# ORDER FORM (Name, Phone, Product, Qty, Location)
+# ORDER FORM
 # ==========================================
 with st.form("order_form"):
+    col1, col2 = st.columns(2)
+    with col1:
+        name = st.text_input("Name")
+    with col2:
+        phone = st.text_input("Phone")
     
-    name = st.text_input("Name")
-    phone = st.text_input("Phone")
     product = st.selectbox("Product", PRODUCTS)
-    quantity = st.number_input("Quantity (Meters)", min_value=1, step=1)
-    location = st.text_input("Location")
+    
+    col3, col4 = st.columns(2)
+    with col3:
+        quantity = st.number_input("Quantity (Meters)", min_value=1, step=1)
+    with col4:
+        location = st.text_input("Location")
     
     submit = st.form_submit_button("Submit Order")
 
@@ -129,13 +153,13 @@ with st.form("order_form"):
 # ==========================================
 if submit:
     if not name.strip() or not phone.strip() or not location.strip():
-        st.warning("Please fill all fields.")
+        st.warning("Please fill in all fields.")
     else:
         with st.spinner("Processing..."):
             try:
                 html_content = f"""
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
-                    <h3 style="color: #0056b3;">New Order Received</h3>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-top: 4px solid #0056b3;">
+                    <h3 style="color: #0056b3;">New Pipe Order Received</h3>
                     <hr>
                     <p><strong>Name:</strong> {name}</p>
                     <p><strong>Phone:</strong> {phone}</p>
@@ -157,3 +181,4 @@ if submit:
                 
             except Exception as e:
                 st.error(f"Error: {str(e)}")
+```
