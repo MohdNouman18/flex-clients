@@ -142,7 +142,7 @@ with st.form("order_form"):
     
     col3, col4 = st.columns(2)
     with col3:
-        quantity = st.number_input("Quantity (Meters)", min_value=1, step=1)
+        quantity = st.number_input("Quantity (RFT)", min_value=1, step=1)
     with col4:
         location = st.text_input("Location")
     
@@ -164,7 +164,7 @@ if submit:
                     <p><strong>Name:</strong> {name}</p>
                     <p><strong>Phone:</strong> {phone}</p>
                     <p><strong>Product:</strong> {product}</p>
-                    <p><strong>Quantity:</strong> {quantity} Meters</p>
+                    <p><strong>Quantity:</strong> {quantity} RFT</p>
                     <p><strong>Location:</strong> {location}</p>
                 </div>
                 """
