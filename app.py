@@ -1,116 +1,159 @@
 import streamlit as st
 import resend
+import os
 
 # ==========================================
-# PAGE SETUP & CUSTOM CSS
+# PAGE SETUP & MINIMAL CSS
 # ==========================================
-st.set_page_config(page_title="Flex Head | Order Portal", page_icon="🏭", layout="centered")
+st.set_page_config(page_title="Flex Pipe | Order", layout="centered")
 
 st.markdown("""
     <style>
-    .stApp { background-color: #f8f9fa; }
-    div[data-testid="stForm"] { 
-        background-color: #ffffff; 
-        padding: 30px; 
-        border-radius: 12px; 
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-        border-top: 5px solid #0b1220; 
+    /* Simple and clean background */
+    .stApp {
+        background-color: #ffffff;
     }
-    h1 { color: #0b1220; text-align: center; font-family: 'Segoe UI', sans-serif; font-weight: 700; }
-    h3 { color: #475569; text-align: center; font-weight: 400; margin-bottom: 30px; }
-    .stButton>button { 
-        width: 100%; 
-        background-color: #28a745; 
-        color: white; 
-        height: 50px; 
-        font-size: 18px; 
-        font-weight: bold; 
-        border-radius: 8px; 
-        border: none; 
+    
+    /* Form container */
+    div[data-testid="stForm"] {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
     }
-    .stButton>button:hover { background-color: #218838; color: white; }
+    
+    /* Button style */
+    .stButton>button {
+        width: 100%;
+        background-color: #0056b3;
+        color: white;
+        height: 45px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    .stButton>button:hover {
+        background-color: #004494;
+        color: white;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<h1>🏭 FLEX HEAD INDUSTRIES</h1>", unsafe_allow_html=True)
-st.markdown("<h3>B2B Online Pipe Ordering Portal</h3>", unsafe_allow_html=True)
+# ==========================================
+# HEADER & LOGO
+# ==========================================
+# Agar logo.png file folder mein hai toh show hoga
+if os.path.exists("logo.png"):
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("logo.png", use_container_width=True)
+
+st.markdown("<h3 style='text-align: center; color: #333;'>Order Form</h3>", unsafe_allow_html=True)
 
 # ==========================================
-# SECRETS LOAD KAREIN
+# SECRETS SETUP
 # ==========================================
 try:
     resend.api_key = st.secrets["RESEND_API_KEY"]
-    TARGET_EMAIL = st.secrets["EMAIL_RECEIVER"] # Sirf isi email par order jayega
+    TARGET_EMAIL = st.secrets["EMAIL_RECEIVER"]
 except Exception:
-    st.error("⚠️ Secrets missing! Please configure RESEND_API_KEY and EMAIL_RECEIVER in Streamlit Cloud.")
+    st.error("Secrets missing. Please configure RESEND_API_KEY and EMAIL_RECEIVER.")
     st.stop()
 
 # ==========================================
-# PRODUCTS LIST
+# PRODUCTS LIST (From your CSV)
 # ==========================================
 PRODUCTS = [
-    "Flex PPRC Pipe - 20mm (Rs. 450/m)",
-    "Flex PPRC Pipe - 32mm (Rs. 600/m)",
-    "Flex HDPE Pipe - 50mm (Rs. 850/m)",
-    "Flex HDPE Pipe - 110mm (Rs. 1500/m)",
-    "Flex HDPE Pipe - 160mm (Rs. 2200/m)"
+    "HDPE (PE-100) 20MM PN 16 BLACK", "HDPE (PE-100) 25MM PN 16 BLACK", "HDPE (PE-100) 32MM PN 16 BLACK",
+    "HDPE (PE-100) 40MM PN 16 BLACK", "HDPE (PE-100) 50MM PN 16 BLACK", "HDPE (PE-100) 63MM PN 16 BLACK",
+    "HDPE (PE-100) 75MM PN 16 BLACK", "HDPE (PE-100) 90MM PN 16 BLACK", "HDPE (PE-100) 110MM PN 16 BLACK",
+    "HDPE (PE-100) 125MM PN 16 BLACK", "HDPE (PE-100) 140MM PN 16 BLACK", "HDPE (PE-100) 160MM PN 16 BLACK",
+    "HDPE (PE-100) 180MM PN 16 BLACK", "HDPE (PE-100) 200MM PN 16 BLACK", "HDPE (PE-100) 225MM PN 16 BLACK",
+    "HDPE (PE-100) 250MM PN 16 BLACK", "HDPE (PE-100) 280MM PN 16 BLACK", "HDPE (PE-100) 315MM PN 16 BLACK",
+    "HDPE (PE-100) 355MM PN 16 BLACK", "HDPE (PE-100) 400MM PN 16 BLACK", "HDPE (PE-100) 450MM PN 16 BLACK",
+    "HDPE (PE-100) 500MM PN 16 BLACK", "HDPE (PE-100) 560MM PN 16 BLACK", "HDPE (PE-100) 630MM PN 16 BLACK",
+    "HDPE (PE-100) 20MM PN 12.5 BLACK", "HDPE (PE-100) 25MM PN 12.5 BLACK", "HDPE (PE-100) 32MM PN 12.5 BLACK",
+    "HDPE (PE-100) 40MM PN 12.5 BLACK", "HDPE (PE-100) 50MM PN 12.5 BLACK", "HDPE (PE-100) 63MM PN 12.5 BLACK",
+    "HDPE (PE-100) 75MM PN 12.5 BLACK", "HDPE (PE-100) 90MM PN 12.5 BLACK", "HDPE (PE-100) 110MM PN 12.5 BLACK",
+    "HDPE (PE-100) 125MM PN 12.5 BLACK", "HDPE (PE-100) 140MM PN 12.5 BLACK", "HDPE (PE-100) 160MM PN 12.5 BLACK",
+    "HDPE (PE-100) 180MM PN 12.5 BLACK", "HDPE (PE-100) 200MM PN 12.5 BLACK", "HDPE (PE-100) 225MM PN 12.5 BLACK",
+    "HDPE (PE-100) 250MM PN 12.5 BLACK", "HDPE (PE-100) 280MM PN 12.5 BLACK", "HDPE (PE-100) 315MM PN 12.5 BLACK",
+    "HDPE (PE-100) 355MM PN 12.5 BLACK", "HDPE (PE-100) 400MM PN 12.5 BLACK", "HDPE (PE-100) 450MM PN 12.5 BLACK",
+    "HDPE (PE-100) 560MM PN 12.5 BLACK", "HDPE (PE-100) 630MM PN 12.5 BLACK",
+    "HDPE (PE-100) 20MM PN 10 BLACK", "HDPE (PE-100) 25MM PN 10 BLACK", "HDPE (PE-100) 32MM PN 10 BLACK",
+    "HDPE (PE-100) 40MM PN 10 BLACK", "HDPE (PE-100) 50MM PN 10 BLACK", "HDPE (PE-100) 63MM PN 10 BLACK",
+    "HDPE (PE-100) 75MM PN 10 BLACK", "HDPE (PE-100) 90MM PN 10 BLACK", "HDPE (PE-100) 110MM PN 10 BLACK",
+    "HDPE (PE-100) 125MM PN 10 BLACK", "HDPE (PE-100) 140MM PN 10 BLACK", "HDPE (PE-100) 160MM PN 10 BLACK",
+    "HDPE (PE-100) 180MM PN 10 BLACK", "HDPE (PE-100) 200MM PN 10 BLACK", "HDPE (PE-100) 225MM PN 10 BLACK",
+    "HDPE (PE-100) 250MM PN 10 BLACK", "HDPE (PE-100) 280MM PN 10 BLACK", "HDPE (PE-100) 315MM PN 10 BLACK",
+    "HDPE (PE-100) 355MM PN 10 BLACK", "HDPE (PE-100) 400MM PN 10 BLACK", "HDPE (PE-100) 450MM PN 10 BLACK",
+    "HDPE (PE-100) 500MM PN 10 BLACK", "HDPE (PE-100) 560MM PN 10 BLACK", "HDPE (PE-100) 630MM PN 10 BLACK",
+    "HDPE (PE-100) 20MM PN 8 BLACK", "HDPE (PE-100) 25MM PN 8 BLACK", "HDPE (PE-100) 32MM PN 8 BLACK",
+    "HDPE (PE-100) 40MM PN 8 BLACK", "HDPE (PE-100) 50MM PN 8 BLACK", "HDPE (PE-100) 63MM PN 8 BLACK",
+    "HDPE (PE-100) 75MM PN 8 BLACK", "HDPE (PE-100) 90MM PN 8 BLACK", "HDPE (PE-100) 90MM PN 8 BLACK (65%+35%)",
+    "HDPE (PE-100) 110MM PN 8 BLACK", "HDPE (PE-100) 125MM PN 8 BLACK", "HDPE (PE-100) 140MM PN 8 BLACK",
+    "HDPE (PE-100) 160MM PN 8 BLACK", "HDPE (PE-100) 180MM PN 8 BLACK", "HDPE (PE-100) 200MM PN 8 BLACK",
+    "HDPE (PE-100) 225MM PN 8 BLACK", "HDPE (PE-100) 250MM PN 8 BLACK", "HDPE (PE-100) 280MM PN 8 BLACK",
+    "HDPE (PE-100) 315MM PN 8 BLACK", "HDPE (PE-100) 355MM PN 8 BLACK", "HDPE (PE-100) 400MM PN 8 BLACK",
+    "HDPE (PE-100) 450MM PN 8 BLACK", "HDPE (PE-100) 500MM PN 8 BLACK", "HDPE (PE-100) 560MM PN 8 BLACK",
+    "HDPE (PE-100) 630MM PN 8 BLACK", "HDPE (PE-100) 20MM PN 6 BLACK", "HDPE (PE-100) 25MM PN 6 BLACK",
+    "HDPE (PE-100) 32MM PN 6 BLACK", "HDPE (PE-100) 40MM PN 6 BLACK", "HDPE (PE-100) 50MM PN 6 BLACK",
+    "HDPE (PE-100) 63MM PN 6 BLACK", "HDPE (PE-100) 75MM PN 6 BLACK", "HDPE (PE-100) 90MM PN 6 BLACK",
+    "HDPE (PE-100) 110MM PN 6 BLACK", "HDPE (PE-100) 125MM PN 6 BLACK", "HDPE (PE-100) 140MM PN 6 BLACK",
+    "HDPE (PE-100) 160MM PN 6 BLACK", "HDPE (PE-100) 180MM PN 6 BLACK", "HDPE (PE-100) 200MM PN 6 BLACK",
+    "HDPE (PE-100) 225MM PN 6 BLACK", "HDPE (PE-100) 250MM PN 6 BLACK", "HDPE (PE-100) 280MM PN 6 BLACK",
+    "HDPE (PE-100) 315MM PN 6 BLACK", "HDPE (PE-100) 355MM PN 6 BLACK", "HDPE (PE-100) 400MM PN 6 BLACK",
+    "HDPE (PE-100) 450MM PN 6 BLACK", "HDPE (PE-100) 500MM PN 6 BLACK", "HDPE (PE-100) 560MM PN 6 BLACK",
+    "HDPE (PE-100) 630MM PN 6 BLACK", "HDPE (PE-100) 110MM PN 8 BLACK (65%+35%)", "HDPE (PE-100) 125MM PN 8 BLACK (65%+35%)",
+    "HDPE (PE-100) 110MM PN 8 BLACK (65%+35%)", "HDPE (PE-100) 200MM PN 8 BLACK (65%+35%)", "HDPE (PE-100) 225MM PN 8 BLACK (65%+35%)",
+    "HDPE (PE-100) 250MM PN 8 BLACK (65%+35%)", "HDPE (PE-100) 315MM PN 8 BLACK (65%+35%) W/O PRINT", "HDPE (PE-100) 355M PN 8 BLACK (W/ PN-10 PRINT)",
+    "HDPE (PE-100) 400MM PN 8 BLACK (65%+35%)", "HDPE (PE-100) 450MM PN 8 BLACK (65%+35%)", "HDPE (PE-100) 630MM PN 8 BLACK (60%+40%)",
+    "HDPE (PE-100) 90MM PN 10 BLACK (65%+35%)", "HDPE (PE-100) 110MM PN 10 BLACK (R65%+L35%)", "HDPE (PE-100) 160MM PN 10 BLACK (R65%+L35%)",
+    "HDPE (PE-100) 200MM PN 10 BLACK (65%+35%)", "HDPE (PE-100) 250MM PN 10 BLACK (65%+35%)", "HDPE (PE-100) 315MM PN 10 BLACK (65%+35%)",
+    "HDPE (PE-100) 500MM PN 10 BLACK (60%+40%)", "HDPE (PE-100) 500MM PN 10 (60%+40%) INSIDE ROUGH"
 ]
 
 # ==========================================
-# ORDER FORM
+# ORDER FORM (Name, Phone, Product, Qty, Location)
 # ==========================================
 with st.form("order_form"):
-    st.markdown("### 📝 Enter Your Details")
-    col1, col2 = st.columns(2)
-    with col1:
-        name = st.text_input("Customer / Company Name *", placeholder="e.g. Ali Builders")
-    with col2:
-        phone = st.text_input("Phone Number *", placeholder="e.g. 0300 1234567")
     
-    st.markdown("### 📦 Select Product")
-    col3, col4 = st.columns([2, 1])
-    with col3:
-        product = st.selectbox("Select Pipe Type *", PRODUCTS)
-    with col4:
-        quantity = st.number_input("Quantity (Meters) *", min_value=10, step=10, value=10)
+    name = st.text_input("Name")
+    phone = st.text_input("Phone")
+    product = st.selectbox("Product", PRODUCTS)
+    quantity = st.number_input("Quantity (Meters)", min_value=1, step=1)
+    location = st.text_input("Location")
     
-    submit = st.form_submit_button("🚀 Send Order Request")
+    submit = st.form_submit_button("Submit Order")
 
 # ==========================================
 # EMAIL SENDING LOGIC
 # ==========================================
 if submit:
-    if not name.strip() or not phone.strip():
-        st.warning("⚠️ Please fill in all required fields.")
+    if not name.strip() or not phone.strip() or not location.strip():
+        st.warning("Please fill all fields.")
     else:
-        with st.spinner("Sending your order..."):
+        with st.spinner("Processing..."):
             try:
-                # Email ka format
                 html_content = f"""
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
-                    <div style="background-color: #0b1220; color: white; padding: 20px; text-align: center;">
-                        <h2 style="margin: 0;">New Pipe Order Received</h2>
-                    </div>
-                    <div style="padding: 20px; background-color: #f9f9f9;">
-                        <p><strong>Customer Name:</strong> {name}</p>
-                        <p><strong>Phone Number:</strong> {phone}</p>
-                        <p><strong>Product:</strong> {product}</p>
-                        <p><strong>Quantity:</strong> {quantity} Meters</p>
-                    </div>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
+                    <h3 style="color: #0056b3;">New Order Received</h3>
+                    <hr>
+                    <p><strong>Name:</strong> {name}</p>
+                    <p><strong>Phone:</strong> {phone}</p>
+                    <p><strong>Product:</strong> {product}</p>
+                    <p><strong>Quantity:</strong> {quantity} Meters</p>
+                    <p><strong>Location:</strong> {location}</p>
                 </div>
                 """
                 
-                # Email Resend ke through bhejein
                 params = {
                     "from": "onboarding@resend.dev",
-                    "to": [TARGET_EMAIL],  # <--- Yahan sirf aapki email jayegi
-                    "subject": f"🚨 New Order: {name} - {quantity}m",
+                    "to": [TARGET_EMAIL],
+                    "subject": f"Order: {name} - {quantity}m",
                     "html": html_content
                 }
                 
                 resend.Emails.send(params)
-                st.success(f"✅ Thank you {name}! Aapka order kamyabi se bhej diya gaya hai.")
-                st.balloons()
+                st.success("Order submitted successfully.")
                 
             except Exception as e:
-                st.error(f"❌ Email bhejne mein masla aaya. Error: {str(e)}")
+                st.error(f"Error: {str(e)}")
