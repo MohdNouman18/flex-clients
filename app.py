@@ -185,7 +185,7 @@ if submit:
                 params = {
                     "from": "onboarding@resend.dev",
                     "to": [TARGET_EMAIL],
-                    "subject": f" 🚨 Order: {name} - {location}m",
+                    "subject": f" 🚨 Order: {name} - {location}",
                     "html": html_content
                 }
                 
