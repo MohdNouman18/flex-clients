@@ -40,7 +40,7 @@ st.markdown("""
     .stButton>button {
         width: 100%;
         background-color: #0056b3;
-        color: blue;
+        color: white;
         height: 48px;
         font-size: 16px;
         font-weight: 600;
@@ -50,7 +50,7 @@ st.markdown("""
     }
     .stButton>button:hover {
         background-color: #004494;
-        color: white;
+        color: blue;
     }
     </style>
 """, unsafe_allow_html=True)
