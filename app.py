@@ -5,7 +5,7 @@ import os
 # ==========================================
 # PAGE SETUP & STYLING
 # ==========================================
-st.set_page_config(page_title="Flex Pipe | Order", layout="centered")
+st.set_page_config(page_title="Flex Head Pipe", layout="centered")
 
 st.markdown("""
     <style>
@@ -40,7 +40,7 @@ st.markdown("""
     .stButton>button {
         width: 100%;
         background-color: #0056b3;
-        color: white;
+        color: blue;
         height: 48px;
         font-size: 16px;
         font-weight: 600;
